@@ -25,7 +25,7 @@ class DcatFilesystemConfigServiceProvider extends ServiceProvider
 	{
 		parent::init();
 
-        Event::listen('admin:booted', function () {
+        app()->booted(function () {
             config()->set('filesystems.disks.oss', [
                 'access_key' => FilesystemConfig::get('oss_access_key'),
                 'secret_key' => FilesystemConfig::get('oss_secret_key'),
@@ -61,6 +61,9 @@ class DcatFilesystemConfigServiceProvider extends ServiceProvider
             ]);
 
             config()->set('filesystems.default', FilesystemConfig::get('disk', config('filesystems.default')));
+        });
+
+        Event::listen('admin:booted', function () {
             config()->set('admin.upload.disk', FilesystemConfig::get('disk', config('admin.upload.disk')));
         });
 	}
